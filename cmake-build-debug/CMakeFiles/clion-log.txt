@@ -1,0 +1,4 @@
+"/mnt/102204D3102204D3/A-Software for linux/clion-2020.1/bin/cmake/linux/bin/cmake" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/cmake-build-debug
