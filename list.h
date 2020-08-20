@@ -16,8 +16,8 @@ typedef struct node {
     char* clueSmallArea;
     int industryCode;
     char* industryDescription;
-    float xCoordinate;
-    float yCoordinate;
+    double xCoordinate;
+    double yCoordinate;
     char* location;
 
     struct node* next;

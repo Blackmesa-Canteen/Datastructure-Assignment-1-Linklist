@@ -6,6 +6,8 @@
 
 #IncludeRegexTransform: 
 
+/mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/list.h
+
 /mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/main.c
 stdio.h
 -
@@ -13,4 +15,6 @@ stdlib.h
 -
 assert.h
 -
+list.h
+/mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/list.h
 
