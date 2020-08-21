@@ -1,41 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
+#include <string.h>
 #include "list.h"
-
-void TraverseList(node_ptr h){
-    node_ptr p = h->next;
-    while(p != NULL){
-        printf("%d\n",p->industryCode);
-        p = p->next;
-    }
-}
+#include "dictFunctions.h"
 
 int main(int argc, char  **argv) {
-
     char* inputFileName = NULL;
     char* outputFileName = NULL;
     char* whatToFind = NULL;
+    char quitCommend[] = "quit!";
     size_t whatToFindNumber = 0;
 
+    // catch commandline;
     inputFileName = argv[1];
     outputFileName = argv[2];
 
-    printf("Please input the the business name: \n");
-    getline(&whatToFind, &whatToFindNumber, stdin);
-
-    //Open the input file with the given filename for reading.
-    printf("%s\n", inputFileName);
+    // Open the input file with the given filename for reading;
     FILE *fp = fopen(inputFileName, "r");
-
     if (!fp) {
         printf("can't opening file '%s'\n", inputFileName);
         return -1;
     }
 
-    //creatList
+    // creatList;
     node_ptr dictList = creatNodes(fp);
-    TraverseList(dictList);
+    fclose(fp); // close the input csv fie;
 
+    // creat output file;
+    fp = fopen(outputFileName, "w");
+    if (!fp) {
+        printf("can't create file '%s'\n", outputFileName);
+        exit(1);
+    }
+    while(1) {
+        fflush(stdin);
+        printf("\n$ Please input the the business name to search (input \"quit!\" to stop input): ");
+        getline(&whatToFind, &whatToFindNumber, stdin);
+        trimLastEnter(whatToFind);
+        if (!strcmp(quitCommend, whatToFind)) {
+            printf("End of searching\n");
+            break;
+        }
+        searchAndOutput(dictList, fp, whatToFind, outputFileName); //search and output;
+    }
+    printf("*********Thank you for using. *********\n");
+    free(dictList);
+    fclose(fp);
     return 0;
 }
