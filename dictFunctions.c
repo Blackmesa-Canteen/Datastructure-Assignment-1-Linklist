@@ -1,51 +1,61 @@
-//
-// Created by Xiaotian on 8/19/20.
-//
+/**
+ *  Created by Xiaotian Li on 8/19/2020.
+ *  dictFunctions.c file contains source codes of functions, which manipulate the records from
+ *  the source file, to give the dictionary ability to process data.
+ *
+ *  char* cutString(char* input,int start,int end) -> input source string, output the substring in
+ *  index interval [start, end) from source string.
+ *
+ *  int extractIntNumber(char* buffer, int* start, int* end) -> input a line of record, index interval,
+ *  and output the number converted from string.
+ *
+ *  double extractDoubleNumber(char* buffer, int* start, int* end) -> similar to above. Output double.
+ *  char* extractString(char* buffer, int* start, int* end) -> similar to above. Deal with comma.
+ *  void trimLastEnter(char *str) -> change '\n' into '\0' at the end of the string.
+ */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-//convert string to number;
-int toNumber(char* input) {
-    int number = atoi(input);
-    return number;
-}
-
-// similar to subString method in Java, [start, end);
 char* cutString(char* input,int start,int end) {
+
     int i = 0, j = 0;
     int size = end - start;
     char* output = NULL;
 
     output = (char*) malloc(sizeof(char) * (size + 1));
-    if(output == NULL) exit(1);
-    for( i = start; i < end; i++) {
+    if (output == NULL) exit(1);
+    for ( i = start; i < end; i++) {
         output[j++] = input[i];
     }
     output[j] = '\0';
+
     return output;
 }
 
-// used to extract Integer number start from the comma that nears the number;
 int extractIntNumber(char* buffer, int* start, int* end) {
+
     int i = 0, number = 0;
     char* catch = NULL;
-
     *start = *end + 1;
     *end = *start;
+
     for(i = *start; buffer[i] != ','; i++) {
         *end = *end + 1;
     }
     catch = cutString(buffer, *start, *end);
-    number = toNumber(catch);
+
+    /* convert string to integer number */
+    number = strtol(catch, NULL, 10);
+    free(catch);
+
     return  number;
 }
 
-// used to extract Double number start from the comma that nears the number;
 double extractDoubleNumber(char* buffer, int* start, int* end) {
+
     int i = 0;
-    float number = 0;
+    double number = 0;
     char* catch = NULL;
 
     *start = *end + 1;
@@ -54,18 +64,20 @@ double extractDoubleNumber(char* buffer, int* start, int* end) {
         *end = *end + 1;
     }
     catch = cutString(buffer, *start, *end);
-    number = atof(catch);
+    number = strtod(catch, NULL);
+    free(catch);
+
     return  number;
 }
 
-// used to extract characters;
 char* extractString(char* buffer, int* start, int* end) {
+
     int i = 0;
     char* catch = NULL;
 
     *start = *end + 1;
     *end = *start;
-    // if this substring does NOT has "..., ..."
+    /* if this substring does NOT has comma */
     if (buffer[*start] != '\"') {
         for(i = *start; buffer[i] != ',' ; i++) {
             if(buffer[i] == '\0') { //Check at the end
@@ -86,6 +98,7 @@ char* extractString(char* buffer, int* start, int* end) {
         }
         catch = cutString(buffer, *start, *end);
         *end = *end + 1; // move to the ,
+
         return catch;
     }
 }

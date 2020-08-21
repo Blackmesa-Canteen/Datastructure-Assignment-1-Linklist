@@ -1,10 +1,14 @@
-//
-// Created by Xiaotian on 8/19/20.
-//
+/**
+ * Created by Xiaotian Li on 8/19/2020.
+ * This header file contains declaration of linked list used to stored records,
+ * list pointer, and functions about the list.
+ */
+
 #ifndef ASSIGNMENT_1__CODE_LIST_H
 #define ASSIGNMENT_1__CODE_LIST_H
 
 typedef struct node {
+
     char* key;
     int censusYear;
     int blockId;
@@ -22,6 +26,7 @@ typedef struct node {
 
 typedef node_t* node_ptr;
 node_ptr creatNodes(FILE *fp);
-void searchAndOutput(node_ptr dictHead, FILE *fp, char* whatToFind, char* outputFileName);
+void searchAndOutput(node_ptr dictHead, FILE *fp, char* whatToFind);
+void freeList(node_ptr head);
 
-#endif //ASSIGNMENT_1__CODE_LIST_H
+#endif /* ASSIGNMENT_1__CODE_LIST_H */
