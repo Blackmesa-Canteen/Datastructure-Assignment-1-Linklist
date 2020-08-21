@@ -1,10 +1,9 @@
 //
-// Created by root on 8/19/20.
+// Created by Xiaotian on 8/19/20.
 //
 #include "list.h"
 #include <stdio.h>
 #include <stdlib.h>
-
 #ifndef ASSIGNMENT_1__CODE_DICTFUNCTIONS_H
 #define ASSIGNMENT_1__CODE_DICTFUNCTIONS_H
 
@@ -13,5 +12,6 @@ char* cutString(char * input,int start,int end);
 int extractIntNumber(char* buffer, int* start, int* end);
 char* extractString(char* buffer, int* start, int* end);
 double extractDoubleNumber(char* buffer, int* start, int* end);
+void trimLastEnter(char *str);
 
 #endif //ASSIGNMENT_1__CODE_DICTFUNCTIONS_H

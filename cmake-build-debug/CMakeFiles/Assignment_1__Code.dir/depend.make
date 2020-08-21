@@ -7,6 +7,7 @@ CMakeFiles/Assignment_1__Code.dir/list.c.o: ../dictFunctions.h
 CMakeFiles/Assignment_1__Code.dir/list.c.o: ../list.c
 CMakeFiles/Assignment_1__Code.dir/list.c.o: ../list.h
 
+CMakeFiles/Assignment_1__Code.dir/main.c.o: ../dictFunctions.h
 CMakeFiles/Assignment_1__Code.dir/main.c.o: ../list.h
 CMakeFiles/Assignment_1__Code.dir/main.c.o: ../main.c
 

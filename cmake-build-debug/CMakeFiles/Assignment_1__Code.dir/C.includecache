@@ -6,15 +6,25 @@
 
 #IncludeRegexTransform: 
 
+/mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/dictFunctions.h
+list.h
 /mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/list.h
-
-/mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/main.c
 stdio.h
 -
 stdlib.h
 -
-assert.h
+
+/mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/list.c
+stdlib.h
+-
+stdio.h
+-
+string.h
 -
 list.h
+/mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/list.h
+dictFunctions.h
+/mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/dictFunctions.h
+
 /mnt/102204D3102204D3/Desktop/Courses/DATA_STRUCTURE/Assginment/Assignment 1: Code/list.h
 
