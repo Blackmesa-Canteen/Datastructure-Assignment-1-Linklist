@@ -82,7 +82,7 @@ int main(int argc, char  **argv) {
 
     freeList(dictList);
     fclose(fp);
-    printf("*********Thank you for using. *********\n");
+    printf("\n*********Thank you for using. *********\n");
     fflush(stdout);
 
     return 0;
