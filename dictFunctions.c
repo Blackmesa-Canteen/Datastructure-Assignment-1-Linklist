@@ -1,22 +1,18 @@
 /**
  *  Created by Xiaotian Li on 8/19/2020.
- *  dictFunctions.c file contains source codes of functions, which manipulate the records from
+ *  dictFunctions.c contains source codes of functions, which manipulate the records from
  *  the source file, to give the dictionary ability to process data.
- *
- *  char* cutString(char* input,int start,int end) -> input source string, output the substring in
- *  index interval [start, end) from source string.
- *
- *  int extractIntNumber(char* buffer, int* start, int* end) -> input a line of record, index interval,
- *  and output the number converted from string.
- *
- *  double extractDoubleNumber(char* buffer, int* start, int* end) -> similar to above. Output double.
- *  char* extractString(char* buffer, int* start, int* end) -> similar to above. Deal with comma.
- *  void trimLastEnter(char *str) -> change '\n' into '\0' at the end of the string.
  */
 
 #include <stdlib.h>
 #include <string.h>
 
+#include "dictFunctions.h"
+
+/*  char* cutString(char* input,int start,int end) ->
+ *  input source string, output the substring in index interval
+ *  [start, end) from source string.
+ */
 char* cutString(char* input,int start,int end) {
 
     int i = 0, j = 0;
@@ -25,7 +21,7 @@ char* cutString(char* input,int start,int end) {
 
     output = (char*) malloc(sizeof(char) * (size + 1));
     if (output == NULL) exit(1);
-    for ( i = start; i < end; i++) {
+    for(i = start; i < end; i++) {
         output[j++] = input[i];
     }
     output[j] = '\0';
@@ -33,6 +29,11 @@ char* cutString(char* input,int start,int end) {
     return output;
 }
 
+/*
+ *  int extractIntNumber(char* buffer, int* start, int* end) ->
+ *  input a line of record, index interval, and output the number
+ *  converted from string.
+ */
 int extractIntNumber(char* buffer, int* start, int* end) {
 
     int i = 0, number = 0;
@@ -52,14 +53,18 @@ int extractIntNumber(char* buffer, int* start, int* end) {
     return  number;
 }
 
+/*
+ *  double extractDoubleNumber(char* buffer, int* start, int* end) ->
+ *  Similar to the function above, but output double.
+ */
 double extractDoubleNumber(char* buffer, int* start, int* end) {
 
     int i = 0;
     double number = 0;
     char* catch = NULL;
-
     *start = *end + 1;
     *end = *start;
+
     for(i = *start; buffer[i] != ','; i++) {
         *end = *end + 1;
     }
@@ -70,17 +75,20 @@ double extractDoubleNumber(char* buffer, int* start, int* end) {
     return  number;
 }
 
+/*  char* extractString(char* buffer, int* start, int* end) ->
+ *  Similar to the function above. Can deal with comma in "".
+ */
 char* extractString(char* buffer, int* start, int* end) {
 
     int i = 0;
     char* catch = NULL;
-
     *start = *end + 1;
     *end = *start;
+
     /* if this substring does NOT has comma */
     if (buffer[*start] != '\"') {
         for(i = *start; buffer[i] != ',' ; i++) {
-            if(buffer[i] == '\0') { //Check at the end
+            if (buffer[i] == '\0') { //Check at the end
                 *end = *end + 1;
                 break;
             }
@@ -89,7 +97,7 @@ char* extractString(char* buffer, int* start, int* end) {
         catch = cutString(buffer, *start, *end);
         return catch;
     }
-    // if this substring has "..., ..."
+    /* if this substring has "..., ..." */
     else {
         *start = *start + 1;
         *end = *start; // move out of the "
@@ -103,10 +111,14 @@ char* extractString(char* buffer, int* start, int* end) {
     }
 }
 
-void trimLastEnter(char *str) {
+/*
+ * void trimLastEnter(char *str) ->
+ * change '\n' into '\0' at the end of the string.
+ */
+void trimLastEnter(char* str) {
     int len = strlen(str);
     //delete the last '\n'
-    if(str[len-1] == '\n')
+    if (str[len-1] == '\n')
     {
         len--;
         str[len] = '\0';

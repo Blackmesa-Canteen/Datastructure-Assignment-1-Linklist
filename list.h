@@ -28,5 +28,7 @@ typedef node_t* node_ptr;
 node_ptr creatNodes(FILE *fp);
 void searchAndOutput(node_ptr dictHead, FILE *fp, char* whatToFind);
 void freeList(node_ptr head);
+void searchByStdin(node_ptr dictList, FILE *fp);
+void searchByKeyFile(node_ptr dictList, FILE *fp, char* keyFileName);
 
 #endif /* ASSIGNMENT_1__CODE_LIST_H */

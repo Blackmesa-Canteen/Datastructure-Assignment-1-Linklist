@@ -1,15 +1,6 @@
 /**
  *  Created by Xiaotian Li on 8/19/2020.
  *  list.c file contains source codes of functions, which manipulate linked list.
- *
- *  node_ptr creatNodes(FILE *fp) -> input the pointer that points to source .csv file, this
- *  function will creat nodes, and each node stores a line of record from .csv file. Then the
- *  function will return the pointer that points to the head pointer of nodes. This function
- *  reads source file for only once, because the data we need will be stored in linked list.
- *
- *  void searchAndOutput(node_ptr dictHead, FILE *fp, char* whatToFind) ->
- *  input the head pointer of linked list that contains data, the pointer of output file, the
- *  pointer of string contains the key users are looking for.
  */
 
 #include <stdlib.h>
@@ -20,6 +11,11 @@
 #include "dictFunctions.h"
 #define MAXLENGTH 512
 
+/*  node_ptr creatNodes(FILE *fp) -> input the pointer that points to source .csv file, this
+ *  function will creat nodes, and each node stores a line of record from .csv file. Then the
+ *  function will return the pointer that points to the head pointer of nodes. This function
+ *  reads source file for only once, because the data we need will be stored in linked list.
+ */
 node_ptr creatNodes(FILE *fp) {
 
     char* buffer = (char *) malloc(sizeof(char) * (MAXLENGTH + 1));
@@ -40,7 +36,7 @@ node_ptr creatNodes(FILE *fp) {
     fgets(buffer, MAXLENGTH, fp);
 
     /* Read each line, and create each node */
-    while (fgets(buffer, MAXLENGTH, fp) != NULL) {
+    while(fgets(buffer, MAXLENGTH, fp) != NULL) {
         node_ptr pNew = (node_ptr) malloc(sizeof(node_t));
         if (pNew == NULL) exit(1);
         *start = -1;
@@ -63,7 +59,6 @@ node_ptr creatNodes(FILE *fp) {
         p_tail -> next = pNew;
         p_tail = pNew;
     }
-
     printf("Done. Please input the key now. \n");
     printf("******************************\n");
     p_tail -> next = NULL;
@@ -74,17 +69,23 @@ node_ptr creatNodes(FILE *fp) {
     return p_head;
 }
 
+/*
+*  void searchAndOutput(node_ptr dictHead, FILE *fp, char* whatToFind) ->
+*  input the head pointer of linked list that contains data, the pointer of output
+*  file, the pointer of string contains the key that users are looking for. This
+*  function will search key in the list and output matched record to the file.
+*/
 void searchAndOutput(node_ptr dictHead, FILE *fp, char* whatToFind) {
 
     int hasFound = 0;
     node_ptr p = dictHead -> next;
 
-    printf("Generating the output...\n");
-    while (p != NULL) {
+    printf("\nGenerating the output...\n");
+    while(p != NULL) {
         /* if found the record */
         if (!strcmp(p -> key, whatToFind)) {
             hasFound = 1;
-            fprintf(fp,"%s −− > ", whatToFind);
+            fprintf(fp,"\n%s −− > ", whatToFind);
             fprintf(fp, "Census year: %d || ", p -> censusYear);
             fprintf(fp, "Block ID: %d || ", p -> blockId);
             fprintf(fp, "Property ID: %d || ", p -> propertyId);
@@ -94,31 +95,110 @@ void searchAndOutput(node_ptr dictHead, FILE *fp, char* whatToFind) {
             fprintf(fp, "Industry (ANZSIC4) description: %s || ", p -> industryDescription);
             fprintf(fp, "X coordinate: %.5f || ", p -> xCoordinate);
             fprintf(fp, "Y coordinate: %.5f || ", p -> yCoordinate);
-            fprintf(fp, "Location: %s || \n\n", p -> location);
+            fprintf(fp, "Location: %s || \n", p -> location);
         }
         p = p -> next;
     }
 
     /* if not found the record */
     if (hasFound == 0) {
-        fprintf(fp,"%s −− > ", whatToFind); /* write the key name */
+        fprintf(fp,"\n%s −− > ", whatToFind); /* write the key name */
         printf("WARNING: No record, check the name?\n");
-        fprintf(fp, "NOT FOUND. \n\n");
+        fprintf(fp, "NOT FOUND. \n");
     }
 }
 
+/*
+*  void searchByStdin(node_ptr dictList, FILE *fp) ->
+*  input the head pointer of linked list that contains data, and the pointer of
+*  output file. This function get keys from stdin, then calls searchAndOutput()
+*  to output records.
+*/
+void searchByStdin(node_ptr dictList, FILE *fp) {
+
+    const char quitCommand[] = "quit!";
+    char* whatToFind = NULL;
+    size_t whatToFindNumber = 0;
+    while(1) {
+        fflush(stdin);
+        printf("\n$ Please input a business name to "
+               "search (input \"quit!\" to stop input): ");
+        if (getline(&whatToFind, &whatToFindNumber, stdin) == EOF) {
+            /* detect ending of stdin if users use < operator in bash */
+            break;
+        }
+        trimLastEnter(whatToFind); /* trim '\n' at the end of the string */
+        if (!strcmp(quitCommand, whatToFind)) {
+            printf("\nEnd of searching\n");
+            break;
+        }
+        searchAndOutput(dictList, fp, whatToFind);
+    }
+
+    free(whatToFind);
+}
+
+/*
+*  void searchByKeyFile(node_ptr dictList, FILE *fp, char* keyFileName) ->
+*  input the head pointer of linked list that contains data, the pointer of
+*  output file and name of key file.This function get keys from key file,
+*  then calls searchAndOutput() to output records.
+*/
+void searchByKeyFile(node_ptr dictList, FILE *fp, char* keyFileName) {
+
+    const int MaxLen = 128;
+    int* start = (int *) malloc(sizeof(int));
+    if (start == NULL) exit(1);
+    int* end = (int *) malloc(sizeof(int));
+    if (end == NULL) exit(1);
+    int indexEnd = 0;
+    char* buffer = (char *) malloc(sizeof(char) * (MaxLen + 1));
+    if (buffer == NULL) exit(1);
+    char* whatToFind = NULL;
+
+    FILE *keyFilePointer = fopen(keyFileName, "r");
+    if (!keyFilePointer) {
+        printf("can't read the key file '%s'\n", keyFileName);
+        exit(1);
+    }
+
+    printf("Reading key file... \n");
+    while(fgets(buffer, MaxLen, keyFilePointer) != NULL) {
+        indexEnd = strlen(buffer);
+
+        /* Determines whether the last line of string has
+         * a newline character or not */
+        if(buffer[indexEnd - 1] == '\n') {
+            whatToFind = cutString(buffer, 0, indexEnd - 1);
+            searchAndOutput(dictList, fp, whatToFind);
+            free(whatToFind);
+        } else {
+            whatToFind = cutString(buffer, 0, indexEnd);
+            searchAndOutput(dictList, fp, whatToFind);
+            free(whatToFind);
+        }
+    }
+    printf("Done. \n");
+    free(start);
+    free(end);
+    free(buffer);
+    fclose(keyFilePointer);
+}
+
+/*
+*  void freeList(node_ptr head)  ->
+*  free linked list.
+*/
 void freeList(node_ptr head) {
 
     node_ptr p;
-    while (head != NULL) {
+    while(head != NULL) {
         p = head;
         head = head -> next;
 
-        /**
+        /*
          *  4 sentences below deal with mem leak problems
-         *  in cutString() func. Although no memory leaks
-         *  anymore, 4 UninitCondition warnings shows up
-         *  in Valgrind.
+         *  in cutString() func, according to Valgrind.
          */
         free(p -> clueSmallArea);
         free(p -> industryDescription);
@@ -128,4 +208,3 @@ void freeList(node_ptr head) {
         free(p);
     }
 }
-
