@@ -7,9 +7,11 @@
 #ifndef ASSIGNMENT_1__CODE_DICTFUNCTIONS_H
 #define ASSIGNMENT_1__CODE_DICTFUNCTIONS_H
 
-char* cutString(char* input,int start,int end);
+char* cutString(char * input,int start,int end);
 int extractIntNumber(char* buffer, int* start, int* end);
 char* extractString(char* buffer, int* start, int* end);
+void deleteOneQuote(char* string);
+char* extractKeyString(char* buffer, int* start, int* end);
 double extractDoubleNumber(char* buffer, int* start, int* end);
 void trimLastEnter(char* str);
 
