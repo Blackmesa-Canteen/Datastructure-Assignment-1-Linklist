@@ -47,7 +47,7 @@ node_ptr creatNodes(FILE *fp) {
         pNew -> propertyId = extractIntNumber(buffer, start, end);
         pNew -> basePropertyId = extractIntNumber(buffer, start, end);
         pNew -> clueSmallArea = extractString(buffer, start, end);
-        pNew -> key = extractString(buffer, start, end);
+        pNew -> key = extractKeyString(buffer, start, end);
         pNew -> industryCode = extractIntNumber(buffer, start, end);
         pNew -> industryDescription = extractString(buffer, start, end);
         pNew -> xCoordinate = extractDoubleNumber(buffer, start, end);
@@ -59,6 +59,7 @@ node_ptr creatNodes(FILE *fp) {
         p_tail -> next = pNew;
         p_tail = pNew;
     }
+
     printf("Done. Please input the key now. \n");
     printf("******************************\n");
     p_tail -> next = NULL;
