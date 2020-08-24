@@ -20,9 +20,9 @@ char* cutString(char* input,int start,int end) {
     int size = end - start;
     char* output = NULL;
 
-    output = (char*) malloc(sizeof(char) * (size + 1));
+    output = (char*) calloc((size + 1), sizeof(char));
     if (output == NULL) exit(1);
-    for( i = start; i < end; i++) {
+    for(i = start; i < end; i++) {
         output[j++] = input[i];
     }
     output[j] = '\0';
@@ -89,17 +89,15 @@ char* extractString(char* buffer, int* start, int* end) {
     /* if this substring does NOT has comma */
     if (buffer[*start] != '\"') {
         for(i = *start; buffer[i] != ',' ; i++) {
-            if (buffer[i] == '\0') { //Check at the end
+            if (buffer[i] == '\0') {
                 *end = *end + 1;
                 break;
             }
             *end = *end + 1;
         }
         catch = cutString(buffer, *start, *end);
-        return catch;
-    }
-    /* if this substring has "..., ..." */
-    else {
+    } else {
+        /* if this substring has "..., ..." */
         *start = *start + 1;
         *end = *start; // move out of the "
         for(i = *start; buffer[i] != '\"'; i++) {
@@ -107,9 +105,9 @@ char* extractString(char* buffer, int* start, int* end) {
         }
         catch = cutString(buffer, *start, *end);
         *end = *end + 1; // move to the ,
-
-        return catch;
     }
+
+    return catch;
 }
 
 /* This function derived from the function above, which
@@ -172,7 +170,7 @@ void deleteOneQuote(char* string) {
  * void trimLastEnter(char *str) ->
  * change '\n' into '\0' at the end of the string.
  */
-void trimLastEnter(char* str) {
+void trimLastEnter(char *str) {
     int len = strlen(str);
     //delete the last '\n'
     if(str[len-1] == '\n')

@@ -26,7 +26,7 @@ node_ptr creatNodes(FILE *fp) {
     if (end == NULL) exit(1);
 
     /* Set up a head node */
-    node_ptr p_head = (node_ptr) malloc(sizeof(node_t));
+    node_ptr p_head = (node_ptr) calloc(1,sizeof(node_t));
     if (p_head == NULL) exit(1);
     node_ptr p_tail = p_head;
     p_tail -> next = NULL;
@@ -169,7 +169,7 @@ void searchByKeyFile(node_ptr dictList, FILE *fp, char* keyFileName) {
 
         /* Determines whether the last line of string has
          * a newline character or not */
-        if(buffer[indexEnd - 1] == '\n') {
+        if (buffer[indexEnd - 1] == '\n') {
             whatToFind = cutString(buffer, 0, indexEnd - 1);
             searchAndOutput(dictList, fp, whatToFind);
             free(whatToFind);
@@ -193,7 +193,7 @@ void searchByKeyFile(node_ptr dictList, FILE *fp, char* keyFileName) {
 void freeList(node_ptr head) {
 
     node_ptr p;
-    while(head != NULL) {
+    while (head != NULL) {
         p = head;
         head = head -> next;
 
