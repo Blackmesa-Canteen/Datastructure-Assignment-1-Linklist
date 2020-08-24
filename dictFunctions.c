@@ -20,9 +20,9 @@ char* cutString(char* input,int start,int end) {
     int size = end - start;
     char* output = NULL;
 
-    output = (char*) malloc(sizeof(char) * (size + 1));
+    output = (char*) calloc((size + 1), sizeof(char));
     if (output == NULL) exit(1);
-    for( i = start; i < end; i++) {
+    for ( i = start; i < end; i++) {
         output[j++] = input[i];
     }
     output[j] = '\0';
@@ -89,7 +89,7 @@ char* extractString(char* buffer, int* start, int* end) {
     /* if this substring does NOT has comma */
     if (buffer[*start] != '\"') {
         for(i = *start; buffer[i] != ',' ; i++) {
-            if (buffer[i] == '\0') { //Check at the end
+            if(buffer[i] == '\0') { //Check at the end
                 *end = *end + 1;
                 break;
             }
@@ -132,8 +132,10 @@ char* extractKeyString(char* buffer, int* start, int* end) {
             *end = *end + 1;
         }
         catch = cutString(buffer, *start, *end);
-    } else {
+        return catch;
+    }
         /* if this substring has "..., ..." */
+    else {
         *start = *start + 1;
         *end = *start; // move out of the "
         for(i = *start; !(buffer[i] == '\"' &&
@@ -150,9 +152,9 @@ char* extractKeyString(char* buffer, int* start, int* end) {
                 deleteOneQuote(catch);
             }
         }
-    }
 
-    return catch;
+        return catch;
+    }
 }
 
 /* change " \"\"The Ulysses\"\" " into " \"The Ulysses\" " */
@@ -172,7 +174,7 @@ void deleteOneQuote(char* string) {
  * void trimLastEnter(char *str) ->
  * change '\n' into '\0' at the end of the string.
  */
-void trimLastEnter(char* str) {
+void trimLastEnter(char *str) {
     int len = strlen(str);
     //delete the last '\n'
     if(str[len-1] == '\n')
