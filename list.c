@@ -36,7 +36,7 @@ node_ptr creatNodes(FILE *fp) {
     fgets(buffer, MAXLENGTH, fp);
 
     /* Read each line, and create each node */
-    while (fgets(buffer, MAXLENGTH, fp) != NULL) {
+    while(fgets(buffer, MAXLENGTH, fp) != NULL) {
         node_ptr pNew = (node_ptr) malloc(sizeof(node_t));
         if (pNew == NULL) exit(1);
         *start = -1;
@@ -82,7 +82,7 @@ void searchAndOutput(node_ptr dictHead, FILE *fp, char* whatToFind) {
     node_ptr p = dictHead -> next;
 
     printf("\nGenerating the output...\n");
-    while (p != NULL) {
+    while(p != NULL) {
         /* if found the record */
         if (!strcmp(p -> key, whatToFind)) {
             hasFound = 1;
@@ -164,12 +164,12 @@ void searchByKeyFile(node_ptr dictList, FILE *fp, char* keyFileName) {
     }
 
     printf("Reading key file... \n");
-    while (fgets(buffer, MaxLen, keyFilePointer) != NULL) {
+    while(fgets(buffer, MaxLen, keyFilePointer) != NULL) {
         indexEnd = strlen(buffer);
 
         /* Determines whether the last line of string has
          * a newline character or not */
-        if(buffer[indexEnd - 1] == '\n') {
+        if (buffer[indexEnd - 1] == '\n') {
             whatToFind = cutString(buffer, 0, indexEnd - 1);
             searchAndOutput(dictList, fp, whatToFind);
             free(whatToFind);
