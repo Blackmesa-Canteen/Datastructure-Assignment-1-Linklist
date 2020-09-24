@@ -2,7 +2,7 @@
 use a link list to store a .csv file
 
 # Purpose
-The purpose of this assignment is for you to:  
+The purpose of this assignment is to:  
 • Improve your proficiency in C programming and your dexterity with dynamic memory allocation.  
 • Demonstrate understanding of a concrete data structure (linked list).  
 • Practice multi-file programming and improve your proficiency in using UNIX utilities.  
